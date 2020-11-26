@@ -13,20 +13,25 @@ sock.connect(server_address)
 try:
     
     # Send data
-    message = 'u123717821348721347:50'.encode()
+    message = 'SET:CEO Office:UID:L11:22'.encode()
     print (sys.stderr, 'sending "%s"' % message)
     sock.sendall(message)
 
     # Look for the response
     amount_received = 0
     amount_expected = len(message)
+    data_received = ""
     
-    while amount_expected > 0:
+    while amount_expected > amount_received:
         data = sock.recv(32)
         amount_received += len(data)
+        data_received += str(data)
 
         #DO STUFF
         print (sys.stderr, 'received "%s"' % data)
+
+
+        print(data_received)
 
 finally:
     print (sys.stderr, 'closing socket')
