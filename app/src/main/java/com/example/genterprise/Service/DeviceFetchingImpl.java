@@ -1,23 +1,40 @@
 package com.example.genterprise.Service;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-public class DeviceFetchingImpl extends Thread implements IDeviceFetching  {
+public class DeviceFetchingImpl implements IDeviceFetching  {
 
     private static final String TAG = "DeviceFetchingImpl";
     private String ip = "10.0.2.2";
     private int port = 8080;
     private Socket socket;
+    private OutputStreamWriter oWriter;
+    private Context context;
+    private Thread t;
 
 
     @Override
     public String getJsonObjFromServer(String input) {
         Log.i(TAG, "getJsonObjFromServer: " + input);
+        try {
+            oWriter = new OutputStreamWriter(context.openFileOutput("models.json", Context.MODE_PRIVATE));
+            oWriter.append(input);
+            oWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return input;
     }
 
@@ -38,6 +55,16 @@ public class DeviceFetchingImpl extends Thread implements IDeviceFetching  {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String getIP() {
+        return this.ip;
+    }
+
+    @Override
+    public Integer getPort() {
+        return this.port;
     }
 
     @Override

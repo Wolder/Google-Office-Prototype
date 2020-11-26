@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.genterprise.Controller.DataController;
 import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.Service.DeviceFetchingImpl;
 import com.example.genterprise.Service.IDeviceFetching;
@@ -19,10 +20,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    MyRecyclerViewAdapter myAdapter;
+    DataController dataController;
 
-    List<LightModel> modelList = new ArrayList<>();
-    MyRecyclerViewAdapter myadapter;
-    DeviceFetchingImpl data;
 
 
     public static final String TAG = "MainActivity";
@@ -37,13 +37,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        data = new DeviceFetchingImpl();
-        data.start();
+        dataController = new DataController(new DeviceFetchingImpl());
+
+        dataController.addToModelList(new LightModel("test", "hej", "mere-test"));
 
 
-        Log.d(TAG, "onCreate: " + modelList);
-        myadapter = new MyRecyclerViewAdapter(modelList);
-        recyclerView.setAdapter(myadapter);
+
+        Log.d(TAG, "onCreate: " + dataController.getModels());
+        myAdapter = new MyRecyclerViewAdapter(dataController.getModels());
+        recyclerView.setAdapter(myAdapter);
 
     }
 }

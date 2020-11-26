@@ -37,4 +37,13 @@ public class LightModel implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "LightModel{" +
+                "name='" + name + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }
