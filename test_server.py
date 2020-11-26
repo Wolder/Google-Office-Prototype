@@ -3,7 +3,7 @@ import sys
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-ip = ''
+ip = '127.0.0.1'
 port = 65432
 
 server_address = (ip, port)
