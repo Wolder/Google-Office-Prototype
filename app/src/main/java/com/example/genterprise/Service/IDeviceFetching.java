@@ -1,9 +1,10 @@
 package com.example.genterprise.Service;
 
+import android.content.Context;
+
 public interface IDeviceFetching extends Runnable {
 
-    String getJsonObjFromServer(String input);
-    void connectToServer(String ip, int port);
+    void getJsonObjFromServer(Context context, String input);
     String getIP();
     Integer getPort();
     void run();

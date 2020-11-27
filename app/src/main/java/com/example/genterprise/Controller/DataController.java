@@ -3,11 +3,11 @@ package com.example.genterprise.Controller;
 import android.util.Log;
 
 import com.example.genterprise.Model.LightModel;
-import com.example.genterprise.Service.DeviceFetchingImpl;
 import com.example.genterprise.Service.IDeviceFetching;
-
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class DataController {
 
@@ -74,14 +74,29 @@ public class DataController {
         return modelList;
     }
 
-    public List<LightModel> modelFromJson(){
-        fetching.connectToServer("localhost", 8080);
+    public LightModel findAll(){
+        for (LightModel lightModel : modelList){
+            return lightModel;
+        }
+        return null;
+    }
 
+    public LightModel findAny(final LightModel model){
+        LightModel matchingObject = modelList.stream()
+                .filter(p -> p.getId().equals(model.getId()))
+                .findAny()
+                .orElse(null);
 
+        return model;
+    }
+
+    public List<LightModel> jsonToModel(String model){
+        Gson gson = new Gson();
+        //Handle received data from server
+        //Build LightModel objects based on json from server
 
 
         return modelList;
     }
-
 
 }

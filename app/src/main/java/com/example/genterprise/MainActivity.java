@@ -10,12 +10,8 @@ import android.util.Log;
 
 import com.example.genterprise.Controller.DataController;
 import com.example.genterprise.Model.LightModel;
-import com.example.genterprise.Service.DeviceFetchingImpl;
-import com.example.genterprise.Service.IDeviceFetching;
+import com.example.genterprise.Service.DeviceFetchingService;
 import com.example.genterprise.View.MyRecyclerViewAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        dataController = new DataController(new DeviceFetchingImpl());
+        dataController = new DataController(new DeviceFetchingService());
 
         dataController.addToModelList(new LightModel("test", "hej", "mere-test"));
 

@@ -7,13 +7,10 @@ jsondata = {}
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-<<<<<<< HEAD
+
 ip = ''
 port = 8080
-=======
-ip = '127.0.0.1'
-port = 65432
->>>>>>> 3df0b93b9bbe420c05649a0e8b89ac0554fdc470
+
 
 server_address = (ip, port)
 
