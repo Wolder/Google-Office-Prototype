@@ -7,15 +7,8 @@ jsondata = {}
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-<<<<<<< HEAD
 ip = ''
 port = 8080
-=======
-
-ip = ''
-port = 8080
-
->>>>>>> e4fd3322d88704828f8a0b0a91b5e39bec7c8a1a
 
 server_address = (ip, port)
 
@@ -33,9 +26,8 @@ def RESTcall(input):
     roomName = stringArray[1]
     valueToAction = stringArray[2]
     deviceUID = stringArray[3]
-    deviceValue = stringArray[4]
-
-    print(action + " : " + roomName + " : " + valueToAction + " : " + deviceUID + " : " + deviceValue)
+    if (action == "SET"):
+        deviceValue = stringArray[4]
 
 
     with open('office.json') as json_file:
@@ -57,7 +49,7 @@ def RESTcall(input):
         json.dump(jsondata, outfile)
 
 def JSONcall(input):
-    stringArray = str(input).split(":")
+    stringArray = str(input).split(":JSON:")
     action = stringArray[0]
     content = stringArray[1]
 

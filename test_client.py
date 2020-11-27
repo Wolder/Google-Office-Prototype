@@ -12,7 +12,7 @@ sock.connect(server_address)
 
 try:
     # Send data
-    message = 'SET:CEO Office:UID:L11:22'.encode()
+    message = 'GET:CEO Office:UID:L11'.encode()
     print (sys.stderr, 'sending "%s"' % message)
     sock.sendall(message)
 
