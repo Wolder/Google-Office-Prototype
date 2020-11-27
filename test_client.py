@@ -11,7 +11,6 @@ print (sys.stderr, 'connecting to %s port %s' % server_address)
 sock.connect(server_address)
 
 try:
-    
     # Send data
     message = 'SET:CEO Office:UID:L11:22'.encode()
     print (sys.stderr, 'sending "%s"' % message)
@@ -22,16 +21,19 @@ try:
     amount_expected = len(message)
     data_received = ""
     
-    while amount_expected > amount_received:
-        data = sock.recv(32)
+    while amount_received > amount_expected:
+        print(str(amount_expected) + ">" + str(amount_received))
+        data = sock.recv(16)
         amount_received += len(data)
         data_received += str(data)
 
         #DO STUFF
         print (sys.stderr, 'received "%s"' % data)
-
-
         print(data_received)
+        if (amount_received == amount_expected):
+            break
+
+    
 
 finally:
     print (sys.stderr, 'closing socket')
