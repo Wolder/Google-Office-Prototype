@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         dataController = new DataController(new DeviceFetchingService());
 
-        dataController.addToModelList(new LightModel("test", "hej", "mere-test"));
+        dataController.addToModelList(new LightModel("test", 50, "mere-test"));
 
 
 

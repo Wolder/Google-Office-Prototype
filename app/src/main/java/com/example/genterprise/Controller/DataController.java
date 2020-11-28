@@ -2,6 +2,7 @@ package com.example.genterprise.Controller;
 
 import android.util.Log;
 
+import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.Service.IDeviceFetching;
 import com.google.gson.Gson;
@@ -63,11 +64,11 @@ public class DataController {
         return modelList;
     }
 
-    public List<LightModel> modifyObjectManufacturerInList(LightModel model, String newManufacturer){
+    public List<LightModel> modifyObjectManufacturerInList(LightModel model, int newValue){
         String id = model.getId();
         for (int i = 0; i < modelList.size(); i++) {
             if (modelList.contains(id)){
-                modelList.get(i).setManufacturer(newManufacturer);
+                modelList.get(i).setValue(newValue);
                 break;
             }
         }
@@ -81,8 +82,8 @@ public class DataController {
         return null;
     }
 
-    public LightModel findAny(final LightModel model){
-        LightModel matchingObject = modelList.stream()
+    public Devices findAny(final Devices model){
+        Devices matchingObject = modelList.stream()
                 .filter(p -> p.getId().equals(model.getId()))
                 .findAny()
                 .orElse(null);
