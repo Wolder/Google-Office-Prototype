@@ -10,4 +10,8 @@ public class RoomModel extends FloorModel {
     public RoomModel(String name, List<RoomModel> roomModelList) {
         super(name, roomModelList);
     }
+
+    public RoomModel(String name){
+        super(name);
+    }
 }

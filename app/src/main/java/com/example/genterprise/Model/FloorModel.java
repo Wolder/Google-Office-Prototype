@@ -35,4 +35,9 @@ public class FloorModel {
         this.name = name;
         this.roomModelList = roomModelList;
     }
+
+    public FloorModel(String name){
+        this.name = name;
+        this.roomModelList = roomModelList;
+    }
 }

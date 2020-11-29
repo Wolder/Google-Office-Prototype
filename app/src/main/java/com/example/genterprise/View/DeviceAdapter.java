@@ -8,35 +8,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.genterprise.Model.LightModel;
+import com.example.genterprise.Model.Devices;
 import com.example.genterprise.R;
-import com.example.genterprise.Service.IDeviceFetching;
 
 import java.util.List;
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
+public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
 
-    List<LightModel> modelList;
+    List<Devices> modelList;
 
-    public MyRecyclerViewAdapter(List<LightModel> modelList) {
+    public DeviceAdapter(List<Devices> modelList) {
         this.modelList = modelList;
     }
 
     @NonNull
     @Override
-    public MyRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DeviceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyRecyclerViewAdapter.ViewHolder holder, int position) {
-        LightModel lightModel = modelList.get(position);
+    public void onBindViewHolder(@NonNull DeviceAdapter.ViewHolder holder, int position) {
+        Devices lightModel = modelList.get(position);
         String usr = lightModel.getName();
-        String id = lightModel.getId();
+        int value = lightModel.getValue();
 
         holder.nameTextView.setText(usr);
-        holder.idTextView.setText(id);
+        holder.idTextView.setText(String.valueOf(value));
     }
 
     @Override

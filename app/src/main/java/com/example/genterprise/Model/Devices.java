@@ -1,7 +1,5 @@
 package com.example.genterprise.Model;
 
-import java.util.List;
-
 public class Devices {
 
     private String name;
