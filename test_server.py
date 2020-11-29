@@ -40,7 +40,7 @@ def RESTcall(input):
                             device["value"] = int(deviceValue)
                             connection.sendall((deviceUID + " is now " + deviceValue).encode())
                         if (action == "GET"):
-                            connection.sendall(device["value"].encode())
+                            connection.sendall(str(device["value"]).encode())
                         if (action == "DEL"):
                             del device
                             connection.sendall((deviceUID + " is now deleted").encode())
