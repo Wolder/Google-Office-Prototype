@@ -7,7 +7,6 @@ import com.example.genterprise.Model.FloorModel;
 import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.Model.RoomModel;
 import com.example.genterprise.Service.DeviceFetchingService;
-import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +116,7 @@ public class DataController {
     }
 
     public List<Devices> jsonToModel(String model){
-        Gson gson = new Gson();
+
         //Handle received data from server
         //Build LightModel objects based on json from server
 

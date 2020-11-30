@@ -18,6 +18,7 @@ public class DeviceFetchingService {
     private String ip = "10.0.2.2";
     private int port = 8080;
     private List<String> jsonResponse = new ArrayList<>();
+    private Context context;
     private Socket socket;
     boolean socketDone = false;
 
@@ -30,7 +31,7 @@ public class DeviceFetchingService {
         return this.ip;
     }
 
-    public Integer getPort() {
+    public int getPort() {
         return this.port;
     }
 
