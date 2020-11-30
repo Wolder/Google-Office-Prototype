@@ -66,10 +66,10 @@ public class DataController {
     }
 
     public List<Devices> modifyObjectIdInList(LightModel model, String newId){
-        String id = model.getId();
+        String id = model.getID();
         for (int i = 0; i < deviceModelList.size(); i++) {
             if (deviceModelList.contains(id)){
-                deviceModelList.get(i).setId(newId);
+                deviceModelList.get(i).setID(newId);
                 break;
             }
         }
@@ -77,10 +77,10 @@ public class DataController {
     }
 
     public List<Devices> modifyObjectNameInList(LightModel model, String newName){
-        String id = model.getId();
+        String id = model.getID();
         for (int i = 0; i < deviceModelList.size(); i++) {
             if (deviceModelList.contains(id)){
-                deviceModelList.get(i).setName(newName);
+                deviceModelList.get(i).setType(newName);
                 break;
             }
         }
@@ -89,7 +89,7 @@ public class DataController {
     }
 
     public List<Devices> modifyObjectValueInList(LightModel model, int newValue){
-        String id = model.getId();
+        String id = model.getID();
         for (int i = 0; i < deviceModelList.size(); i++) {
             if (deviceModelList.contains(id)){
                 deviceModelList.get(i).setValue(newValue);
@@ -108,7 +108,7 @@ public class DataController {
 
     public Devices findAny(final Devices model){
         Devices matchingObject = deviceModelList.stream()
-                .filter(p -> p.getId().equals(model.getId()))
+                .filter(p -> p.getID().equals(model.getID()))
                 .findAny()
                 .orElse(null);
 

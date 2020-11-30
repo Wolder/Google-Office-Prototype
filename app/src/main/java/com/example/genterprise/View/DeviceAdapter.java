@@ -31,8 +31,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull DeviceAdapter.ViewHolder holder, int position) {
         Devices lightModel = modelList.get(position);
-        String usr = lightModel.getName();
-        int value = lightModel.getValue();
+        String usr = lightModel.getType();
+        double value = lightModel.getValue();
 
         holder.nameTextView.setText(usr);
         holder.idTextView.setText(String.valueOf(value));

@@ -2,47 +2,47 @@ package com.example.genterprise.Model;
 
 public class Devices {
 
-    private String name;
-    private int value;
-    private String id;
+    private String type;
+    private double value;
+    private String ID;
 
 
-    public Devices(String name, int value, String id) {
-        this.name = name;
+    public Devices(String type, double value, String ID) {
+        this.type = type;
         this.value = value;
-        this.id = id;
+        this.ID = ID;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
-    public String getId() {
-        return id;
+    public String getID() {
+        return ID;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     @Override
     public String toString() {
         return "Devices{" +
-                "name='" + name + '\'' +
+                "name='" + type + '\'' +
                 ", value=" + value +
-                ", id=" + id +
+                ", id=" + ID +
                 '}';
     }
 }

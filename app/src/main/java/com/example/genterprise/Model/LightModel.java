@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class LightModel extends Devices implements Serializable {
 
-    public LightModel(String name, int value, String id) {
-        super(name, value, id);
+    public LightModel(String type, double value, String ID) {
+        super(type, value, ID);
     }
 }
