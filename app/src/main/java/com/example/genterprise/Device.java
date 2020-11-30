@@ -4,5 +4,10 @@ package com.example.genterprise;
 public class Device{
     public String type;
     public double value;
-    public String uID;
+    public String ID;
+
+    @Override
+    public String toString() {
+        return " Type:" + type + " Value:" + value + " ID:" + ID + "\n";
+    }
 }

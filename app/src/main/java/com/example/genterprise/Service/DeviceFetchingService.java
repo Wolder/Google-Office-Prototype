@@ -48,7 +48,7 @@ public class DeviceFetchingService {
                 // TODO -> TEST IMPLEMENTATION
                 Root data = new Gson().fromJson(response, Root.class);
 
-                Log.d(TAG, "run: " + data.rooms.get(0).roomname);
+                Log.d(TAG, "run: " + data.toString());
             }
         }).start();
     }
