@@ -12,6 +12,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.genterprise.Root;
+import com.google.gson.Gson;
+
+
 public class DeviceFetchingService {
 
     private static final String TAG = "DeviceFetchingImpl";
@@ -38,7 +42,13 @@ public class DeviceFetchingService {
          new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "run: " + serverCall("GET:JSON:"));
+                String response = serverCall("GET:JSON:");
+                Log.d(TAG, "run: " + response);
+
+                // TODO -> TEST IMPLEMENTATION
+                Root data = new Gson().fromJson(response, Root.class);
+
+                Log.d(TAG, "run: " + data.rooms.get(0).roomname);
             }
         }).start();
     }

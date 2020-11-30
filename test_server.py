@@ -65,6 +65,7 @@ def JSONcall(input):
         with open('office.json', 'w') as outfile:
             json.dump(content, outfile)
             connection.sendall(("JSON Updated").encode())
+            
 while True:
     # Wait for a connection
     print ('Waiting for Connection')
