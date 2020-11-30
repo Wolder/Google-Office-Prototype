@@ -1,5 +1,6 @@
 package com.example.genterprise.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,12 +10,19 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.genterprise.Controller.DataController;
+import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.FloorModel;
 import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.Model.RoomModel;
 import com.example.genterprise.R;
 import com.example.genterprise.Service.DeviceFetchingService;
 import com.example.genterprise.View.FloorAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class FloorActivity extends AppCompatActivity {
 
@@ -36,13 +44,27 @@ public class FloorActivity extends AppCompatActivity {
 
         dataController = new DataController(new DeviceFetchingService());
 
-        dataController.addFloorToList(new FloorModel("Floor-1"));
-
-
-
-        Log.d(TAG, "onCreate: " + dataController.getFloorModels());
         myAdapter = new FloorAdapter(dataController.getFloorModels(), this);
         recyclerView.setAdapter(myAdapter);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (dataController.getFloorModels().size() == 0) {
+                        Thread.sleep(10);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            myAdapter = new FloorAdapter(dataController.getFloorModels(), getApplicationContext());
+                            recyclerView.setAdapter(myAdapter);
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

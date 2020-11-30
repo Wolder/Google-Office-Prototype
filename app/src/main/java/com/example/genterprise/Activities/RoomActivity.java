@@ -35,12 +35,28 @@ public class RoomActivity extends AppCompatActivity {
 
         dataController = new DataController(new DeviceFetchingService());
 
-        dataController.addRoomToList(new RoomModel("Room-1"));
-
-
         roomAdapter = new RoomAdapter(dataController.getRoomModels(), this);
         recyclerView.setAdapter(roomAdapter);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (dataController.getRoomModels().size() == 0) {
+                        Thread.sleep(10);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            roomAdapter = new RoomAdapter(dataController.getRoomModels(), getApplicationContext());
+                            recyclerView.setAdapter(roomAdapter);
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
     }
 }

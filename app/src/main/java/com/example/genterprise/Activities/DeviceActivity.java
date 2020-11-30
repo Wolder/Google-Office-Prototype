@@ -18,6 +18,7 @@ import com.example.genterprise.R;
 import com.example.genterprise.Service.DeviceFetchingService;
 import com.example.genterprise.View.DeviceAdapter;
 import com.example.genterprise.View.FloorAdapter;
+import com.example.genterprise.View.RoomAdapter;
 
 public class DeviceActivity extends AppCompatActivity {
 
@@ -37,11 +38,28 @@ public class DeviceActivity extends AppCompatActivity {
 
         dataController = new DataController(new DeviceFetchingService());
 
-        dataController.addDeviceToList(new LightModel("Light-1", 100, "UID-1"));
-        dataController.addDeviceToList(new CO2Model("Light-1", 100, "UID-1"));
-        dataController.addDeviceToList(new BlindsModel("Light-1", 100, "UID-1"));
-
         deviceAdapter = new DeviceAdapter(dataController.getDeviceModels());
         recyclerView.setAdapter(deviceAdapter);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (dataController.getDeviceModels().size() == 0) {
+                        Thread.sleep(10);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            deviceAdapter = new DeviceAdapter(dataController.getDeviceModels());
+                            recyclerView.setAdapter(deviceAdapter);
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 }

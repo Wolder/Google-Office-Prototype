@@ -31,7 +31,7 @@
                 },
                 {
                     "type": "thermometer",
-                    "value": 23.5,
+                    "value": 23,
                     "ID": "T1"
                 },
                 {
@@ -71,7 +71,7 @@
                 },
                 {
                     "type": "thermometer",
-                    "value": 21.5,
+                    "value": 21,
                     "ID": "T2"
                 },
                 {

@@ -1,12 +1,22 @@
 package com.example.genterprise.Controller;
 
+import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.example.genterprise.Activities.FloorActivity;
 import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.FloorModel;
 import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.Model.RoomModel;
 import com.example.genterprise.Service.DeviceFetchingService;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +31,8 @@ public class DataController {
 
     public DataController(DeviceFetchingService dfs) {
         this.dfs = dfs;
-        dfs.connect();
+        fetchDatabaseIntoApp();
+        //dfs.connect();
     }
 
     public List<Devices> getDeviceModels(){
@@ -36,22 +47,19 @@ public class DataController {
         return floorModelList;
     }
 
-    public List<Devices> addDeviceToList(Devices model){
+    public void addDeviceToList(Devices model){
         deviceModelList.add(model);
         Log.d(TAG, "Object added to model list: " + model.toString());
-        return deviceModelList;
     }
 
-    public List<RoomModel> addRoomToList(RoomModel model){
+    public void addRoomToList(RoomModel model){
         roomModelList.add(model);
         Log.d(TAG, "Object added to model list: " + model.toString());
-        return roomModelList;
     }
 
-    public List<FloorModel> addFloorToList(FloorModel model){
+    public void addFloorToList(FloorModel model){
         floorModelList.add(model);
         Log.d(TAG, "Object added to model list: " + model.toString());
-        return floorModelList;
     }
 
 
@@ -115,19 +123,41 @@ public class DataController {
         return model;
     }
 
-    public List<Devices> jsonToModel(String model){
+    public List<FloorModel> fetchDatabaseIntoApp() {
+        // Get firebase ref
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        // Fetch rooms
+        database.getReference("").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot room: snapshot.child("rooms").getChildren()) {
+                    for (DataSnapshot device: room.child("devices").getChildren()) {
+                        // Devices
+                        Devices deviceModel = new Devices(
+                                device.child("type").getValue(String.class),
+                                device.child("value").getValue(Double.class),
+                                device.child("ID").getValue(String.class));
 
-        //Handle received data from server
-        //Build LightModel objects based on json from server
+                        addDeviceToList(deviceModel);
+                    }
+                    // Room
+                    RoomModel roomModel = new RoomModel(room.child("roomname").getValue(String.class));
+                    roomModel.setDeviceModelList(deviceModelList);
+                    addRoomToList(roomModel);
+                }
+                // Floor
+                FloorModel floorModel = new FloorModel(snapshot.child("name").getValue(String.class));
+                floorModel.setRoomModelList(roomModelList);
+                addFloorToList(floorModel);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        return deviceModelList;
-    }
+            }
+        });
 
-    public List<Devices> addModelToList(Devices model){
-
-
-        return deviceModelList;
+        return floorModelList;
     }
 
 }

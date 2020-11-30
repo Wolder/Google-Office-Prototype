@@ -2,6 +2,8 @@ package com.example.genterprise.Service;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +14,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.genterprise.Root;
-import com.google.gson.Gson;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class DeviceFetchingService {
@@ -39,6 +44,9 @@ public class DeviceFetchingService {
 
 
     public void connect() {
+        getDatabaseValue("rooms/0/devices/0/ID");
+
+        /*
          new Thread(new Runnable() {
             @Override
             public void run() {
@@ -51,6 +59,28 @@ public class DeviceFetchingService {
                 Log.d(TAG, "run: " + data.toString());
             }
         }).start();
+         */
+    }
+
+    public String getDatabaseValue(String reference) {
+        // Get firebase ref
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(reference);
+
+        // Add listener to data
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: " + snapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+        return "";
     }
 
     public String serverCall(String input) {

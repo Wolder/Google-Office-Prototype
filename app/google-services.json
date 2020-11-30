@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "208693662259",
+    "firebase_url": "https://office-8563c.firebaseio.com",
+    "project_id": "office-8563c",
+    "storage_bucket": "office-8563c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208693662259:android:5274589a8ac5201f5a0946",
+        "android_client_info": {
+          "package_name": "com.example.genterprise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208693662259-okh0l21hmb2e8vmf9ju09vohjknp3mdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqFVasbJ2OYYPi-_6PZYXBdMTOjZiQxwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208693662259-okh0l21hmb2e8vmf9ju09vohjknp3mdp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208693662259:android:0fa3c3c3a15f3a915a0946",
+        "android_client_info": {
+          "package_name": "com.example.testclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208693662259-okh0l21hmb2e8vmf9ju09vohjknp3mdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqFVasbJ2OYYPi-_6PZYXBdMTOjZiQxwU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208693662259-okh0l21hmb2e8vmf9ju09vohjknp3mdp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
