@@ -50,20 +50,21 @@ def RESTcall(input):
 
 def JSONcall(input):
     stringArray = str(input).split(":JSON:")
-    action = stringArray[0]
+    action = stringArray[0].replace(" ", "")
     content = stringArray[1]
 
-    if (action == "GET"):
+    print(action)
+
+    if ("GET" in action):
         with open('office.json') as json_file:
             jsondata = json.load(json_file)
-            connection.sendall(jsondata)
+            connection.sendall(str(jsondata).encode())
+            print (sys.stderr, 'Sending "%s"' % str(jsondata))
 
-    if (action == "SET"):
+    if ("SET" in action):
         with open('office.json', 'w') as outfile:
             json.dump(content, outfile)
-            connection.sendall("JSON Updated")
-
-
+            connection.sendall(("JSON Updated").encode())
 while True:
     # Wait for a connection
     print ('Waiting for Connection')
@@ -74,21 +75,19 @@ while True:
         input = ""
 
         while True:
-            data = connection.recv(16).decode()
+            data = connection.recv(1024)
             print (sys.stderr, 'Received "%s"' % data)
             if data:
-                input = input + str(data)
-                #if (len(str(data)) < 16):
-                #    break
+                if ("JSON" in data.decode()):
+                    JSONcall(data.decode())
+                elif (("GET" or "SET" or "DEL") in data.decode()):
+                    RESTcall(input)
+                else:
+                    connection.sendall("NAN")
             else:
                 print (sys.stderr, 'No more data from', client_address)
                 break
 
-        if ("JSON" in input):
-            print("TODO")
-        else:
-            RESTcall(input)
-        
         jsondata = {}
 
     finally:
