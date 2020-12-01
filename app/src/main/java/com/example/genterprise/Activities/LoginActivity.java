@@ -3,11 +3,13 @@ package com.example.genterprise.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.genterprise.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,7 +23,7 @@ import static android.text.TextUtils.isEmpty;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText mUsername, mPassword;
-    private Button mLogin;
+    private Button mLogin, mSignup;
     private static final String TAG = "LoginActivity";
     private FirebaseAuth mAuth;
 
@@ -36,15 +38,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
-        mUsername = findViewById(R.id.username);
+        mUsername = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
-        mLogin = findViewById(R.id.login);
+        mLogin = findViewById(R.id.signin);
+        mSignup = findViewById(R.id.signup);
         mLogin.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onClick(View view) {
                 switch(view.getId()){
-                    case R.id.login:
-                        signIn();
+                    case R.id.signin:
+                        signIn(mUsername.getText().toString(), mPassword.getText().toString());
                     case R.id.signup:
                         signUp(mUsername.getText().toString(), mPassword.getText().toString());
                     default:
@@ -55,7 +59,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void signIn() {
+    private void signIn(final String email, final String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "signInWithEmail: Success!");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            Log.w(TAG, "signInWithEmail: Failure!", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
 
     }
 
@@ -67,7 +84,12 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "onComplete: Sign up initiated...");
 
                         if(task.isSuccessful()){
-                            //Continue Firebase onComplete!
+                            Log.d(TAG, "createrUserWithEmail: Success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                        } else {
+                            Log.w(TAG, "createUserWithEmail: Failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed!", Toast.LENGTH_LONG).show();
                         }
                     }
                 });{
