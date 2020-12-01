@@ -25,11 +25,46 @@ import static android.text.TextUtils.isEmpty;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
+
+    // Widgets
     private EditText mUsername, mPassword;
     private Button mLogin, mSignup;
-    private static final String TAG = "LoginActivity";
+
+    //Firebase related
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        //Firebase auth setup
+        mAuth = FirebaseAuth.getInstance();
+        fireBaseSetup();
+
+        mUsername = findViewById(R.id.email);
+        mPassword = findViewById(R.id.password);
+        mLogin = findViewById(R.id.signin);
+        mSignup = findViewById(R.id.signup);
+        mLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+
+        mSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Attempting to sign up activity launch");
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
     @Override
     protected void onStart() {
@@ -69,38 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        //Firebase auth setup
-        mAuth = FirebaseAuth.getInstance();
-        fireBaseSetup();
-
-
-        mUsername = findViewById(R.id.email);
-        mPassword = findViewById(R.id.password);
-        mLogin = findViewById(R.id.signin);
-        mSignup = findViewById(R.id.signup);
-        mLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-
-        mSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Attempting to sign up activity launch");
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-    }
 
 
     private void signIn() {
