@@ -190,4 +190,10 @@ public class DataController {
         dataUpdated = false;
     }
 
+    public void createNewRoomModel(RoomModel roomModel, int floorModelI) {
+        roomModelList.add(roomModel);
+        List<RoomModel> newRoomModelList = roomModelList;
+        floorModelList.get(floorModelI).setRoomModelList(roomModelList);
+        updateDatabase();;
+    }
 }

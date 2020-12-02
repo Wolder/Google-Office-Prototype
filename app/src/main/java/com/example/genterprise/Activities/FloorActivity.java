@@ -63,6 +63,7 @@ public class FloorActivity extends AppCompatActivity {
                         public void run() {
                             myAdapter = new FloorAdapter(DataController.getInstance().getFloorModels(), getApplicationContext());
                             recyclerView.setAdapter(myAdapter);
+
                             DataController.getInstance().setDataUpdated(false);
                         }
                     });

@@ -1,21 +1,19 @@
 package com.example.genterprise.Activities;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-
 import com.example.genterprise.Controller.DataController;
-import com.example.genterprise.Model.Devices;
-import com.example.genterprise.Model.LightModel;
-import com.example.genterprise.Model.RoomModel;
 import com.example.genterprise.R;
-import com.example.genterprise.Service.DeviceFetchingService;
-import com.example.genterprise.View.DeviceAdapter;
-import com.example.genterprise.View.FloorAdapter;
+import com.example.genterprise.View.NewRoomDialogFragment;
 import com.example.genterprise.View.RoomAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RoomActivity extends AppCompatActivity {
 
@@ -33,9 +31,23 @@ public class RoomActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
-        roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), this);
+        roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), this, getSupportFragmentManager());
         recyclerView.setAdapter(roomAdapter);
 
+        // Adding new Rooms to the floor
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Floor based on index in list
+                int floorIterable = getIntent().getIntExtra("floor_iterable", 0);
+                DialogFragment dialog = new NewRoomDialogFragment(floorIterable);
+                dialog.show(getSupportFragmentManager(), "NewRoomDialogFragmnet");
+
+            }
+        });
+
+        // Updater Thread
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -46,7 +58,7 @@ public class RoomActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), getApplicationContext());
+                            roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), getApplicationContext(), getSupportFragmentManager());
                             recyclerView.setAdapter(roomAdapter);
                             DataController.getInstance().setDataUpdated(false);
                         }
