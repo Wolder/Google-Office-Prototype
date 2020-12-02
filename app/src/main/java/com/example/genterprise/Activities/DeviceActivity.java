@@ -23,7 +23,6 @@ import com.example.genterprise.View.RoomAdapter;
 public class DeviceActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private DataController dataController;
     private DeviceAdapter deviceAdapter;
 
     @Override
@@ -31,35 +30,40 @@ public class DeviceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device);
 
+        int roomIterable = getIntent().getIntExtra("room_iterable", 0);
+
         recyclerView = findViewById(R.id.device);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        dataController = new DataController(new DeviceFetchingService());
-
-        deviceAdapter = new DeviceAdapter(dataController.getDeviceModels());
+        deviceAdapter = new DeviceAdapter(DataController.getInstance().getRoomModels().get(roomIterable).devices);
         recyclerView.setAdapter(deviceAdapter);
 
-        new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while (dataController.getDeviceModels().size() == 0) {
-                        Thread.sleep(10);
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            deviceAdapter = new DeviceAdapter(dataController.getDeviceModels());
-                            recyclerView.setAdapter(deviceAdapter);
+                    while (true) {
+                        Thread.sleep(100);
+                        while (!DataController.getInstance().isDataUpdated()) {
+                            Thread.sleep(10);
                         }
-                    });
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                deviceAdapter = new DeviceAdapter(DataController.getInstance()
+                                        .getRoomModels().get(roomIterable).devices);
+                                recyclerView.setAdapter(deviceAdapter);
+                                DataController.getInstance().setDataUpdated(false);
+                            }
+                        });
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }).start();
-
+        });
+        t.start();
     }
 }

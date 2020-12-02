@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.ViewHolder> 
         FloorModel floorModel = modelList.get(position);
         String usr = floorModel.getName();
         holder.nameTextView.setText(usr);
+        holder.trigger.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -51,9 +53,11 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
+        ImageView trigger;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
+            trigger = itemView.findViewById(R.id.trigger);
             nameTextView = itemView.findViewById(R.id.floorName);
             nameTextView.setOnClickListener(new View.OnClickListener() {
                 @Override

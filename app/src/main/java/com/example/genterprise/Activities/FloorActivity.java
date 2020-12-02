@@ -28,7 +28,6 @@ public class FloorActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     FloorAdapter myAdapter;
-    DataController dataController;
 
     public static final String TAG = "FloorActivity";
 
@@ -42,23 +41,22 @@ public class FloorActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        dataController = new DataController(new DeviceFetchingService());
-
-        myAdapter = new FloorAdapter(dataController.getFloorModels(), this);
+        myAdapter = new FloorAdapter(DataController.getInstance().getFloorModels(), this);
         recyclerView.setAdapter(myAdapter);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while (dataController.getFloorModels().size() == 0) {
+                    while (!DataController.getInstance().isDataUpdated()) {
                         Thread.sleep(10);
                     }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            myAdapter = new FloorAdapter(dataController.getFloorModels(), getApplicationContext());
+                            myAdapter = new FloorAdapter(DataController.getInstance().getFloorModels(), getApplicationContext());
                             recyclerView.setAdapter(myAdapter);
+                            DataController.getInstance().setDataUpdated(false);
                         }
                     });
                 } catch (InterruptedException e) {

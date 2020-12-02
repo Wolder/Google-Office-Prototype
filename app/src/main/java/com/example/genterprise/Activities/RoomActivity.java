@@ -19,7 +19,6 @@ import com.example.genterprise.View.RoomAdapter;
 
 public class RoomActivity extends AppCompatActivity {
 
-    private DataController dataController;
     private RecyclerView recyclerView;
     private RoomAdapter roomAdapter;
 
@@ -33,23 +32,23 @@ public class RoomActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        dataController = new DataController(new DeviceFetchingService());
 
-        roomAdapter = new RoomAdapter(dataController.getRoomModels(), this);
+        roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), this);
         recyclerView.setAdapter(roomAdapter);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    while (dataController.getRoomModels().size() == 0) {
+                    while (!DataController.getInstance().isDataUpdated()) {
                         Thread.sleep(10);
                     }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            roomAdapter = new RoomAdapter(dataController.getRoomModels(), getApplicationContext());
+                            roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), getApplicationContext());
                             recyclerView.setAdapter(roomAdapter);
+                            DataController.getInstance().setDataUpdated(false);
                         }
                     });
                 } catch (InterruptedException e) {

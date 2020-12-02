@@ -18,6 +18,13 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="90dp"
             android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/trigger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_baseline_highlight_24" />
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

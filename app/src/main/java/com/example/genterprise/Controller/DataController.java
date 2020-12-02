@@ -23,48 +23,54 @@ import java.util.List;
 
 public class DataController {
 
+    private static DataController instance = new DataController();
     private static final String TAG = "DataController";
     private List<Devices> deviceModelList = new ArrayList<>();
     private List<RoomModel> roomModelList = new ArrayList<>();
     private List<FloorModel> floorModelList = new ArrayList<>();
-    private DeviceFetchingService dfs;
+    private boolean dataUpdated = false;
 
-    public DataController(DeviceFetchingService dfs) {
-        this.dfs = dfs;
+    public DataController() {
         fetchDatabaseIntoApp();
         //dfs.connect();
     }
 
-    public List<Devices> getDeviceModels(){
-        return deviceModelList;
+    //Get the only object available
+    public static DataController getInstance() {
+        return instance;
+    }
+
+
+    public List<Devices> getDeviceModels(RoomModel roomModel) {
+        return roomModel.devices;
     }
 
     public List<RoomModel> getRoomModels() {
         return roomModelList;
     }
 
-    public List<FloorModel> getFloorModels(){
+    public List<FloorModel> getFloorModels() {
         return floorModelList;
     }
 
-    public void addDeviceToList(Devices model){
+    public void addDeviceToList(Devices model) {
         deviceModelList.add(model);
         Log.d(TAG, "Object added to model list: " + model.toString());
     }
 
-    public void addRoomToList(RoomModel model){
+    public void addRoomToList(RoomModel model) {
         roomModelList.add(model);
         Log.d(TAG, "Object added to model list: " + model.toString());
     }
 
-    public void addFloorToList(FloorModel model){
+    public void addFloorToList(FloorModel model) {
         floorModelList.add(model);
         Log.d(TAG, "Object added to model list: " + model.toString());
     }
 
 
-    public List<Devices> deleteModelFromList(LightModel model){
-        if(deviceModelList.contains(model)){
+    public List<Devices> deleteModelFromList(LightModel model) {
+        if (deviceModelList.contains(model)) {
             deviceModelList.remove(model);
         } else {
             Log.d(TAG, "Object not found in list: " + model.toString());
@@ -73,10 +79,10 @@ public class DataController {
         return deviceModelList;
     }
 
-    public List<Devices> modifyObjectIdInList(LightModel model, String newId){
+    public List<Devices> modifyObjectIdInList(LightModel model, String newId) {
         String id = model.getID();
         for (int i = 0; i < deviceModelList.size(); i++) {
-            if (deviceModelList.contains(id)){
+            if (deviceModelList.contains(id)) {
                 deviceModelList.get(i).setID(newId);
                 break;
             }
@@ -84,10 +90,10 @@ public class DataController {
         return deviceModelList;
     }
 
-    public List<Devices> modifyObjectNameInList(LightModel model, String newName){
+    public List<Devices> modifyObjectNameInList(LightModel model, String newName) {
         String id = model.getID();
         for (int i = 0; i < deviceModelList.size(); i++) {
-            if (deviceModelList.contains(id)){
+            if (deviceModelList.contains(id)) {
                 deviceModelList.get(i).setType(newName);
                 break;
             }
@@ -96,10 +102,10 @@ public class DataController {
         return deviceModelList;
     }
 
-    public List<Devices> modifyObjectValueInList(LightModel model, int newValue){
+    public List<Devices> modifyObjectValueInList(LightModel model, int newValue) {
         String id = model.getID();
         for (int i = 0; i < deviceModelList.size(); i++) {
-            if (deviceModelList.contains(id)){
+            if (deviceModelList.contains(id)) {
                 deviceModelList.get(i).setValue(newValue);
                 break;
             }
@@ -107,20 +113,28 @@ public class DataController {
         return deviceModelList;
     }
 
-    public Devices findAll(){
-        for (Devices model : deviceModelList){
+    public Devices findAll() {
+        for (Devices model : deviceModelList) {
             return model;
         }
         return null;
     }
 
-    public Devices findAny(final Devices model){
+    public Devices findAny(final Devices model) {
         Devices matchingObject = deviceModelList.stream()
                 .filter(p -> p.getID().equals(model.getID()))
                 .findAny()
                 .orElse(null);
 
         return model;
+    }
+
+    public boolean isDataUpdated() {
+        return dataUpdated;
+    }
+
+    public void setDataUpdated(boolean isUpdated) {
+        this.dataUpdated = isUpdated;
     }
 
     public List<FloorModel> fetchDatabaseIntoApp() {
@@ -130,25 +144,31 @@ public class DataController {
         database.getReference("").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot room: snapshot.child("rooms").getChildren()) {
-                    for (DataSnapshot device: room.child("devices").getChildren()) {
+                deviceModelList.clear();
+                roomModelList.clear();
+                floorModelList.clear();
+                for (DataSnapshot room : snapshot.child("rooms").getChildren()) {
+                    for (DataSnapshot device : room.child("devices").getChildren()) {
                         // Devices
                         Devices deviceModel = new Devices(
                                 device.child("type").getValue(String.class),
                                 device.child("value").getValue(Double.class),
-                                device.child("ID").getValue(String.class));
+                                device.child("id").getValue(String.class));
 
                         addDeviceToList(deviceModel);
                     }
                     // Room
-                    RoomModel roomModel = new RoomModel(room.child("roomname").getValue(String.class));
+                    RoomModel roomModel = new RoomModel(room.child("name").getValue(String.class));
                     roomModel.setDeviceModelList(deviceModelList);
+                    // Clear List
+                    deviceModelList = new ArrayList<>();
                     addRoomToList(roomModel);
                 }
                 // Floor
                 FloorModel floorModel = new FloorModel(snapshot.child("name").getValue(String.class));
                 floorModel.setRoomModelList(roomModelList);
                 addFloorToList(floorModel);
+                dataUpdated = true;
             }
 
             @Override
@@ -158,6 +178,16 @@ public class DataController {
         });
 
         return floorModelList;
+    }
+
+    public void updateDatabase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getInstance().getReference();
+        for (FloorModel floor : getFloorModels()) {
+            ref.child("name").setValue(floor.getName());
+            ref.child("rooms").setValue(floor.getRoomModelList());
+        }
+        dataUpdated = false;
     }
 
 }

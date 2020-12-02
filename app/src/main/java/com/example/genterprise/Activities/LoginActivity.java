@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication failed!", Toast.LENGTH_LONG).show();
                         }
                     }
-                })
+                });
 
     }
 
@@ -93,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });{
-
         }
 
     }
