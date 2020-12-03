@@ -2,6 +2,7 @@ package com.example.genterprise.Activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -52,22 +53,28 @@ public class RoomActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    while (!DataController.getInstance().isDataUpdated()) {
-                        Thread.sleep(10);
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), getApplicationContext(), getSupportFragmentManager());
-                            recyclerView.setAdapter(roomAdapter);
-                            DataController.getInstance().setDataUpdated(false);
+                    while(true){
+                        while (!DataController.getInstance().isDataUpdated()) {
+                            Thread.sleep(10);
                         }
-                    });
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), getApplicationContext(), getSupportFragmentManager());
+                                recyclerView.setAdapter(roomAdapter);
+                                DataController.getInstance().setDataUpdated(false);
+                            }
+                        });
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

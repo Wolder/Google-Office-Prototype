@@ -20,6 +20,7 @@
                 android:text="T"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,6 +29,14 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="90dp"
             android:textSize="16sp"/>
+
+        <SeekBar
+            android:id="@+id/seekBar1"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/lightName"
+            android:layout_marginTop="20dp" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
