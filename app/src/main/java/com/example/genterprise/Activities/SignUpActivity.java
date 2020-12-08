@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.genterprise.CONSTANTS;
 import com.example.genterprise.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,6 +54,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                         if(task.isSuccessful()){
                             Log.d(TAG, "onComplete: AuthState" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            CONSTANTS.CURRENT_USER_ID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            CONSTANTS.CURRENT_USER_NAME = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
                             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                             startActivity(intent);
@@ -60,9 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
                         } else {
                             Log.d(TAG, "Sign up attempt failed...");
                         }
-
                     }
                 });
-
     }
 }

@@ -15,13 +15,13 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/roomname"
+            android:id="@+id/deviceid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Please enter a new room name" />
+            android:hint="Please enter a device ID" />
 
         <Spinner
-            android:id="@+id/accessspinner"
+            android:id="@+id/typespinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

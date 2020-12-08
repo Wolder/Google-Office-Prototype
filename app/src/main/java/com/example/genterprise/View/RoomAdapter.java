@@ -18,15 +18,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.genterprise.Activities.DeviceActivity;
 import com.example.genterprise.Activities.RoomActivity;
+import com.example.genterprise.CONSTANTS;
 import com.example.genterprise.Controller.DataController;
 import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.RoomModel;
+import com.example.genterprise.Model.UserAccessModel;
 import com.example.genterprise.R;
 
 import java.util.List;
@@ -38,11 +41,13 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
     List<RoomModel> modelList;
     Context context;
     FragmentManager manager;
+    int floorI;
 
-    public RoomAdapter(List<RoomModel> modelList, Context context, FragmentManager manager) {
+    public RoomAdapter(List<RoomModel> modelList, Context context, FragmentManager manager, int floorI) {
         this.modelList = modelList;
         this.context = context;
         this.manager = manager;
+        this.floorI = floorI;
     }
 
     @NonNull
@@ -57,6 +62,11 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
         RoomModel model = modelList.get(position);
         String usr = model.getName();
 
+        holder.itemView.setVisibility(View.GONE);
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
+
+        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+
         holder.nameTextView.setText(usr);
         holder.nameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +74,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
                 Intent intent = new Intent(context, DeviceActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("room_iterable", position);
+                intent.putExtra("floor_iterable", floorI);
                 context.startActivity(intent);
             }
         });
@@ -74,6 +85,19 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
                 dialog.show(manager, "LightDialogFragment");
             }
         });
+
+        // Add item if it is accessible
+        if (model.getUserAccess().size() == 0) {
+            holder.itemView.setVisibility(View.VISIBLE);
+            holder.itemView.setLayoutParams(params);
+        } else {
+            for (UserAccessModel userAccessModel : model.getUserAccess()) {
+                if (userAccessModel.getName().equals(CONSTANTS.CURRENT_USER_ID)) {
+                    holder.itemView.setVisibility(View.VISIBLE);
+                    holder.itemView.setLayoutParams(params);
+                }
+            }
+        }
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.genterprise.CONSTANTS;
 import com.example.genterprise.Controller.DataController;
 import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.FloorModel;
@@ -42,6 +43,9 @@ public class FloorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "onCreate: " + CONSTANTS.CURRENT_USER_ID);
+        Log.d(TAG, "onCreate: " + CONSTANTS.CURRENT_USER_NAME);
 
         recyclerView = findViewById(R.id.floor);
 

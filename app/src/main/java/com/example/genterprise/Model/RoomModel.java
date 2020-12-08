@@ -11,6 +11,7 @@ public class RoomModel {
     public List<Devices> devices;
     public String name;
     private static final String TAG = "RoomModel";
+    public List<UserAccessModel> userAccess;
 
     public RoomModel(String name, List<Devices> deviceModelList) {
         this.name = name;
@@ -18,6 +19,14 @@ public class RoomModel {
     }
     public RoomModel(String name){
         this.name = name;
+    }
+
+    public void setUserAccess(List<UserAccessModel> userAccess) {
+        this.userAccess = userAccess;
+    }
+
+    public List<UserAccessModel> getUserAccess() {
+        return userAccess;
     }
 
     public void setDeviceModelList(List<Devices> devices) {

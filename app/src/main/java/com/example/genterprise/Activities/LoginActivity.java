@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.genterprise.CONSTANTS;
 import com.example.genterprise.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -91,6 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if(user != null){
+                    CONSTANTS.CURRENT_USER_ID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    CONSTANTS.CURRENT_USER_NAME = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
                     Log.d(TAG, "onAuthStateChanged: " + user.getUid());
                     Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(LoginActivity.this, FloorActivity.class);

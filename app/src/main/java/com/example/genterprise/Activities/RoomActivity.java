@@ -31,8 +31,9 @@ public class RoomActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
+        int floorIterable = getIntent().getIntExtra("floor_iterable", 0);
 
-        roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), this, getSupportFragmentManager());
+        roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), this, getSupportFragmentManager(), floorIterable);
         recyclerView.setAdapter(roomAdapter);
 
         // Adding new Rooms to the floor
@@ -60,7 +61,7 @@ public class RoomActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), getApplicationContext(), getSupportFragmentManager());
+                                roomAdapter = new RoomAdapter(DataController.getInstance().getRoomModels(), getApplicationContext(), getSupportFragmentManager(), floorIterable);
                                 recyclerView.setAdapter(roomAdapter);
                                 DataController.getInstance().setDataUpdated(false);
                             }

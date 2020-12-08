@@ -6,17 +6,15 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
 import com.example.genterprise.CONSTANTS;
 import com.example.genterprise.Controller.DataController;
+import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.RoomModel;
 import com.example.genterprise.Model.UserAccessModel;
 import com.example.genterprise.R;
@@ -24,11 +22,13 @@ import com.example.genterprise.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewRoomDialogFragment extends DialogFragment {
+public class NewDeviceDialogFragment extends DialogFragment {
     int floorI;
+    int roomI;
 
-    public NewRoomDialogFragment(int floorI) {
+    public NewDeviceDialogFragment(int floorI, int roomI) {
         this.floorI = floorI;
+        this.roomI = roomI;
     }
 
     @Override
@@ -36,34 +36,30 @@ public class NewRoomDialogFragment extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View mView = inflater.inflate(R.layout.popup_window_new_room, null);
+        View mView = inflater.inflate(R.layout.popup_window_new_device, null);
         builder.setView(mView);
 
         List<String> accessList = new ArrayList<>();
-        accessList.add("Universal Access");
-        accessList.add("Personal Access");
+        accessList.add("light");
+        accessList.add("lux");
+        accessList.add("blinds");
 
-        Spinner accessSpinner = mView.findViewById(R.id.accessspinner);
+        EditText typeName =  mView.findViewById(R.id.deviceid);
+        Spinner typespinner = mView.findViewById(R.id.typespinner);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
                 mView.getContext(), android.R.layout.simple_list_item_1, accessList);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        accessSpinner.setAdapter(spinnerAdapter);
+        typespinner.setAdapter(spinnerAdapter);
 
-        builder.setMessage("Create new Room")
-                .setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+        builder.setMessage("Create new Device")
+                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String roomName = ((EditText) mView.findViewById(R.id.roomname)).getText().toString();
-                        RoomModel newModel = new RoomModel(roomName);
+                        String uid = typeName.getText().toString();
+                        String type = typespinner.getSelectedItem().toString();
 
-                        // Personal Access Selected
-                        if (accessSpinner.getSelectedItemPosition() == 1) {
-                            List<UserAccessModel> accessList = new ArrayList<>();
-                            UserAccessModel userAccessModel = new UserAccessModel(CONSTANTS.CURRENT_USER_ID);
-                            accessList.add(userAccessModel);
-                            newModel.setUserAccess(accessList);
-                        }
+                        Devices newModel = new Devices(type, 0, uid);
 
-                        DataController.getInstance().createNewRoomModel(newModel, floorI);
+                        DataController.getInstance().createNewDevice(newModel, floorI, roomI);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -78,4 +74,3 @@ public class NewRoomDialogFragment extends DialogFragment {
         return builder.create();
     }
 }
-

@@ -10,6 +10,7 @@ import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.FloorModel;
 import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.Model.RoomModel;
+import com.example.genterprise.Model.UserAccessModel;
 import com.example.genterprise.Service.DeviceFetchingService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +29,7 @@ public class DataController {
     private List<Devices> deviceModelList = new ArrayList<>();
     private List<RoomModel> roomModelList = new ArrayList<>();
     private List<FloorModel> floorModelList = new ArrayList<>();
+    private List<UserAccessModel> userAccessList = new ArrayList<>();
     private boolean dataUpdated = false;
 
     public DataController() {
@@ -51,6 +53,11 @@ public class DataController {
 
     public List<FloorModel> getFloorModels() {
         return floorModelList;
+    }
+
+    public void addUserToList(UserAccessModel user) {
+        userAccessList.add(user);
+        Log.d(TAG, "Object added to userAccess list: " + user.name);
     }
 
     public void addDeviceToList(Devices model) {
@@ -153,15 +160,27 @@ public class DataController {
                         Devices deviceModel = new Devices(
                                 device.child("type").getValue(String.class),
                                 device.child("value").getValue(Double.class),
-                                device.child("id").getValue(String.class));
+                                device.child("id").getValue(String.class)
+                        );
 
                         addDeviceToList(deviceModel);
                     }
+                    // Room User Access
+                    for (DataSnapshot user : room.child("userAccess").getChildren()) {
+                        UserAccessModel userAccessModel = new UserAccessModel(
+                                user.child("name").getValue(String.class)
+                        );
+
+                        addUserToList(userAccessModel);
+                    }
+
                     // Room
                     RoomModel roomModel = new RoomModel(room.child("name").getValue(String.class));
                     roomModel.setDeviceModelList(deviceModelList);
+                    roomModel.setUserAccess(userAccessList);
                     // Clear List
                     deviceModelList = new ArrayList<>();
+                    userAccessList = new ArrayList<>();
                     addRoomToList(roomModel);
                 }
                 // Floor
@@ -192,8 +211,14 @@ public class DataController {
 
     public void createNewRoomModel(RoomModel roomModel, int floorModelI) {
         roomModelList.add(roomModel);
-        List<RoomModel> newRoomModelList = roomModelList;
         floorModelList.get(floorModelI).setRoomModelList(roomModelList);
-        updateDatabase();;
+        updateDatabase();
+    }
+
+    public void createNewDevice(Devices newModel, int floorI, int roomI) {
+        RoomModel room = roomModelList.get(roomI);
+        room.devices.add(newModel);
+        floorModelList.get(floorI).setRoomModelList(roomModelList);
+        updateDatabase();
     }
 }
