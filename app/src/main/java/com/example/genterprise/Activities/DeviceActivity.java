@@ -7,22 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.genterprise.Controller.DataController;
-import com.example.genterprise.Model.BlindsModel;
-import com.example.genterprise.Model.CO2Model;
-import com.example.genterprise.Model.Devices;
-import com.example.genterprise.Model.FloorModel;
-import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.R;
-import com.example.genterprise.Service.DeviceFetchingService;
 import com.example.genterprise.View.DeviceAdapter;
-import com.example.genterprise.View.FloorAdapter;
 import com.example.genterprise.View.NewDeviceDialogFragment;
-import com.example.genterprise.View.NewRoomDialogFragment;
-import com.example.genterprise.View.RoomAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DeviceActivity extends AppCompatActivity {

@@ -1,17 +1,14 @@
 package com.example.genterprise.Controller;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.genterprise.Activities.FloorActivity;
 import com.example.genterprise.Model.Devices;
 import com.example.genterprise.Model.FloorModel;
 import com.example.genterprise.Model.LightModel;
 import com.example.genterprise.Model.RoomModel;
 import com.example.genterprise.Model.UserAccessModel;
-import com.example.genterprise.Service.DeviceFetchingService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -2,7 +2,6 @@ package com.example.genterprise.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,20 +16,9 @@ import android.widget.Toast;
 
 import com.example.genterprise.CONSTANTS;
 import com.example.genterprise.Controller.DataController;
-import com.example.genterprise.Model.Devices;
-import com.example.genterprise.Model.FloorModel;
-import com.example.genterprise.Model.LightModel;
-import com.example.genterprise.Model.RoomModel;
 import com.example.genterprise.R;
-import com.example.genterprise.Service.DeviceFetchingService;
 import com.example.genterprise.View.FloorAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.List;
 
 public class FloorActivity extends AppCompatActivity {
 
